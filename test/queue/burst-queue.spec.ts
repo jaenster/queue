@@ -2,11 +2,8 @@ import {BurstQueue} from "../../src";
 
 const delay = (ms?: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-describe('fi fo', function () {
-
-
-
-    let notified = [];
+describe('burst queue', function () {
+    const notified = [];
     const bq = new BurstQueue<number>(notified.push.bind(notified));
     const seq = [1, 3, 3, 7];
 

@@ -1,14 +1,18 @@
 import {FiFo} from "../queue/fi-fo";
+import {Work} from "./work";
 
 export class BurstQueue<T> extends FiFo<T> {
 
-    constructor(cb: (args: BurstQueue<T>) => any) {
+    private isSet: number = 0;
+
+    constructor(private readonly cb: (args: BurstQueue<T>) => any) {
         super(() => {
-            if (++isSet === 1) setTimeout(() => {
-                isSet = 0;
-                cb(this);
+            if (++this.isSet === 1) Work.queue.add({
+                work: () => {
+                    this.isSet = 0;
+                    this.cb(this);
+                }
             });
         })
-        let isSet = 0;
     }
 }
